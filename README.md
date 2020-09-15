@@ -1,6 +1,6 @@
 # HyStats Private API
 ## Installation
-- Install requirements (Python 3+ and pip need to be installed)
+- Install dependencies (Python 3+ and pip need to be installed)
 ```
 pip install fastapi
 pip install uvicorn
