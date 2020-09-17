@@ -1,4 +1,5 @@
 # HyStats Private API
+Private API used for internal tools to grab statistics/data from the database
 ## Installation
 - Install dependencies (Python 3+ and pip need to be installed)
 ```
