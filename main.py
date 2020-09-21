@@ -85,6 +85,11 @@ def read_gamemode_stats(player_name: str, api_key: Optional[str] = Header(None))
     return {"stats": grab_certain_stats(player_name, [7, 8, 27, 28], api_key)}
 
 
+@app.get("/player/skyblock/{player_name}", responses={**responses})
+def read_gamemode_stats(player_name: str, api_key: Optional[str] = Header(None)):
+    return {"stats": grab_certain_stats(player_name, [33, 34, 35, 36, 37, 38, 39, 40], api_key)}
+
+
 @app.get("/player/general/{player_name}", responses={**responses})
 def read_general_stats(player_name: str, api_key: Optional[str] = Header(None)):
     return {"stats": grab_certain_stats(player_name, [19, 20, 21, 22, 23, 24, 32], api_key)}
