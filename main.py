@@ -27,7 +27,7 @@ def get_cursor(dict=False):
         mydb.ping(reconnect=True, attempts=3, delay=5)
     except mysql.connector.Error as err:
         return None
-    return mydb.cursor(dictionary=dict)
+    return mydb.cursor(dictionary=dict, buffered=True)
 
 
 @app.get("/player/{player_name}", responses={**responses})
