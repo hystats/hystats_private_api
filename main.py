@@ -18,7 +18,8 @@ def init_db():
         host=config.host,
         user=config.user,
         password=config.password,
-        database=config.database
+        database=config.database,
+        autocommit=True
     )
 
 
@@ -165,7 +166,6 @@ def update_field_mapping():
 
 
 mydb = init_db()
-mydb.autocommit(True)
 lb_field_mapping = {}
 player_id_mapping = {}
 
