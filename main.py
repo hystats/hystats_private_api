@@ -165,6 +165,7 @@ def update_field_mapping():
 
 
 mydb = init_db()
+mydb.autocommit(True)
 lb_field_mapping = {}
 player_id_mapping = {}
 
