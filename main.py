@@ -78,7 +78,7 @@ def read_gamemode_stats(player_name: str, api_key: Optional[str] = Header(None))
 
 @app.get("/player/blitz/{player_name}", responses={**responses})
 def read_gamemode_stats(player_name: str, api_key: Optional[str] = Header(None)):
-    return {"stats": grab_certain_stats(player_name, [15, 29], api_key)}
+    return {"stats": grab_certain_stats(player_name, [29, 15], api_key)}
 
 
 @app.get("/player/bedwars/{player_name}", responses={**responses})
