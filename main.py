@@ -96,6 +96,11 @@ def read_general_stats(player_name: str, api_key: Optional[str] = Header(None)):
     return {"stats": grab_certain_stats(player_name, [19, 20, 21, 22, 23, 24, 32], api_key)}
 
 
+@app.get("/player/ranksgifted/{player_name}", responses={**responses})
+def read_general_stats(player_name: str, api_key: Optional[str] = Header(None)):
+    return {"stats": grab_certain_stats(player_name, [41], api_key)}
+
+
 def check_apikey(api_key):
     if api_key == config.apikey:
         return True
