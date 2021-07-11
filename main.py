@@ -2,6 +2,7 @@ import config
 from typing import Optional
 import mysql.connector
 from fastapi import FastAPI, HTTPException, Header
+import requests
 
 responses = {
     404: {"description": config.strings["not_registered"]},
@@ -9,8 +10,8 @@ responses = {
 }
 
 app = FastAPI(title=config.strings["project_title"],
-    description=config.strings["project_description"],
-    version=config.strings["project_version"],)
+              description=config.strings["project_description"],
+              version=config.strings["project_version"], )
 
 
 def init_db():
@@ -101,6 +102,11 @@ def read_general_stats(player_name: str, api_key: Optional[str] = Header(None)):
     return {"stats": grab_certain_stats(player_name, [41], api_key)}
 
 
+@app.get("/leaderboard/{lb_name}", responses={**responses})
+def read_leaderboard_stats(lb_name: str, api_key: Optional[str] = Header(None)):
+    return {"stats": read_leaderboard_from_website(lb_name, api_key)}
+
+
 def check_apikey(api_key):
     if api_key == config.apikey:
         return True
@@ -156,7 +162,7 @@ def grab_certain_stats(player_name, stats_wanted, api_key):
     mycursor.execute("SELECT lb_field_id, type, value FROM lb_stats WHERE user_id = %s AND (" + detailquery + ")",
                      (grab_player_id(player_name),))
     stats = mycursor.fetchall()
-    readable_stats =  readable_print_stats(stats)
+    readable_stats = readable_print_stats(stats)
     if readable_stats is None or not readable_stats:
         raise HTTPException(status_code=404, detail=config.strings["not_registered"])
     return readable_stats
@@ -168,6 +174,18 @@ def update_field_mapping():
     myresponse = mycursor.fetchall()
     for lbfield in myresponse:
         lb_field_mapping[lbfield["id"]] = lbfield["name"]
+
+
+def read_leaderboard_from_website(name, api_key):
+    if not check_apikey(api_key):
+        raise HTTPException(status_code=403, detail=config.strings["invalid_key"])
+    try:
+        r = requests.get("https://hystats.net/data/" + name + ".json")
+    except requests.exceptions.RequestException as e:
+        raise HTTPException(status_code=404, detail=config.strings["lb_not_found"])
+    if r.status_code != 200:
+        raise HTTPException(status_code=404, detail=config.strings["lb_not_found"])
+    return r.json()
 
 
 mydb = init_db()
