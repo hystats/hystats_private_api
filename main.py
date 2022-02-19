@@ -42,6 +42,11 @@ def read_gamemode_stats(player_name: str, api_key: Optional[str] = Header(None))
     return {"stats": grab_certain_stats(player_name, [1, 2, 3, 6], api_key)}
 
 
+@app.get("/player/skywars/{player_name}/{detailed_mode}", responses={**responses})
+def read_gamemode_stats(player_name: str, detailed_mode: str, api_key: Optional[str] = Header(None)):
+    return {"stats": grab_certain_stats(player_name, get_detailed_mode("skywars", detailed_mode), api_key)}
+
+
 @app.get("/player/uhc/{player_name}", responses={**responses})
 def read_gamemode_stats(player_name: str, api_key: Optional[str] = Header(None)):
     return {"stats": grab_certain_stats(player_name, [26, 4], api_key)}
@@ -74,7 +79,12 @@ def read_gamemode_stats(player_name: str, api_key: Optional[str] = Header(None))
 
 @app.get("/player/duels/{player_name}", responses={**responses})
 def read_gamemode_stats(player_name: str, api_key: Optional[str] = Header(None)):
-    return {"stats": grab_certain_stats(player_name, [13, 14], api_key)}
+    return {"stats": grab_certain_stats(player_name, [13, 14, 120, 119], api_key)}
+
+
+@app.get("/player/duels/{player_name}/{detailed_mode}", responses={**responses})
+def read_gamemode_stats(player_name: str, detailed_mode: str, api_key: Optional[str] = Header(None)):
+    return {"stats": grab_certain_stats(player_name, get_detailed_mode("duels", detailed_mode), api_key)}
 
 
 @app.get("/player/blitz/{player_name}", responses={**responses})
@@ -105,6 +115,10 @@ def read_general_stats(player_name: str, api_key: Optional[str] = Header(None)):
 @app.get("/leaderboard/{lb_name}", responses={**responses})
 def read_leaderboard_stats(lb_name: str, api_key: Optional[str] = Header(None)):
     return {"stats": read_leaderboard_from_website(lb_name, api_key)}
+
+
+def get_detailed_mode(gamemode, detailed_mode):
+    return config.detailed_modes[gamemode][detailed_mode] or []
 
 
 def check_apikey(api_key):
