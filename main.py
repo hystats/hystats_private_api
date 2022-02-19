@@ -152,14 +152,18 @@ def grab_certain_stats(player_name, stats_wanted, api_key):
         raise HTTPException(status_code=403, detail=config.strings["invalid_key"])
     mycursor = get_cursor(dict=True)
     detailquery = ""
+    orderbyquery = " FIELD(lb_field_id, "
     first = True
     for stat_wanted in stats_wanted:
         if first:
             first = False
             detailquery += "lb_field_id = " + str(stat_wanted)
+            orderbyquery += "\"" + str(stat_wanted) + "\""
         else:
             detailquery += " OR lb_field_id = " + str(stat_wanted)
-    mycursor.execute("SELECT lb_field_id, type, value FROM lb_stats WHERE user_id = %s AND (" + detailquery + ")",
+            orderbyquery += ",\"" + str(stat_wanted) + "\""
+    totalquery = "SELECT lb_field_id, type, value FROM lb_stats WHERE user_id = %s AND (" + detailquery + ") ORDER BY " + orderbyquery + ")"
+    mycursor.execute(totalquery,
                      (grab_player_id(player_name),))
     stats = mycursor.fetchall()
     readable_stats = readable_print_stats(stats)
