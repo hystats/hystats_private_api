@@ -132,14 +132,20 @@ def check_apikey(api_key):
     return False
 
 
+def is_staff(rank):
+    return rank == "GAME_MASTER" or rank == "ADMIN" or rank == "MODERATOR" or rank == "OWNER"
+
+
 def grab_player_id(player_name):
     # If player id is not in cache, cache it
     if not player_name in player_id_mapping:
         mycursor = get_cursor(dict=True)
-        mycursor.execute("SELECT id FROM users WHERE displayname = %s", (player_name,))
+        mycursor.execute("SELECT id, `rank` FROM users WHERE displayname = %s", (player_name,))
         userresult = mycursor.fetchone()
         if userresult is None:
             return None
+        if is_staff(userresult["rank"]):
+            raise HTTPException(status_code=423, detail=config.strings["unavailable_staff_member"])
         player_id_mapping[player_name] = userresult["id"]
     return player_id_mapping[player_name]
 

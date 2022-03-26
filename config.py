@@ -8,7 +8,21 @@ strings = {"not_registered": "Player not registered on HyStats", "invalid_key": 
            "project_title": "HyStats Private API",
            "project_description": "This API is intended only for private use within HyStats projects and requires a "
                                   "valid API key.",
-           "project_version": "1.2.0"}
+           "unavailable_staff_member": "Staff member's stats cannot be requested with the bot, only on the "
+                                       "https://hystats.net website.",
+           "project_version": "1.3.0"}
+
+###
+#   Use lb field IDs as follows:
+#   detailed_modes = {
+#       "skywars":
+#           {
+#            "ranked": [kd, wl, wins, kills],
+#            "solo_normal": [kd, wl, wins, kills],
+#       },
+#   }
+###
+
 detailed_modes = {
     "skywars":
         {
