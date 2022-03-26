@@ -97,6 +97,11 @@ def read_gamemode_stats(player_name: str, api_key: Optional[str] = Header(None))
     return {"stats": grab_certain_stats(player_name, [7, 8, 27, 28], api_key)}
 
 
+@app.get("/player/bedwars/{player_name}/{detailed_mode}", responses={**responses})
+def read_gamemode_stats(player_name: str, detailed_mode: str, api_key: Optional[str] = Header(None)):
+    return {"stats": grab_certain_stats(player_name, get_detailed_mode("bedwars", detailed_mode), api_key)}
+
+
 @app.get("/player/skyblock/{player_name}", responses={**responses})
 def read_gamemode_stats(player_name: str, api_key: Optional[str] = Header(None)):
     return {"stats": grab_certain_stats(player_name, [33, 34, 35, 36, 37, 38, 39, 40], api_key)}
