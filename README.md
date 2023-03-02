@@ -5,6 +5,7 @@ Private API used for internal tools to grab statistics/data from the database
 ```
 pip install fastapi
 pip install uvicorn
+pip install mysql-connector-python
 ```
 - Pull files from this repo and fill out `config.py`.
 ## How to run
